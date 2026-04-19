@@ -16,7 +16,7 @@ def generate_code(prompt, lang):
     system_msg = f"You are RHTWIN, an elite programming AI. Output ONLY the source code for {lang}. No explanations, no markdown backticks."
     try:
         completion = client.chat.completions.create(
-            model="llama3-70b-8192",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": system_msg},
                 {"role": "user", "content": prompt}
