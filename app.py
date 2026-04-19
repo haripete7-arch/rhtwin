@@ -13,7 +13,14 @@ else:
 client = Groq(api_key=GROQ_API_KEY)
 
 def generate_code(prompt, lang):
-    system_msg = f"You are RHTWIN, an elite programming AI. Output ONLY the source code for {lang}. No explanations, no markdown backticks."
+    # This new prompt tells the AI to prioritize what YOU type in the box
+    system_msg = (
+        "You are RHTWIN, an elite polyglot programming AI. "
+        f"The user's preferred language is {lang}, BUT if the user explicitly "
+        "mentions a different language in their prompt (like C, Java, or Rust), "
+        "you MUST use that language instead. "
+        "Output ONLY the source code. No explanations, no markdown, no backticks."
+    )
     try:
         completion = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
@@ -21,7 +28,7 @@ def generate_code(prompt, lang):
                 {"role": "system", "content": system_msg},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.2,
+            temperature=0.1, # Lower temperature makes it more precise
         )
         return completion.choices[0].message.content
     except Exception as e:
